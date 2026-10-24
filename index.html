@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Quantum Scientific Calculator - Advanced Math &amp; Precision Computing</title>
+  <meta name="description" content="Modern, professional Scientific Calculator Web App featuring advanced trigonometry, logarithms, powers, factorials, history tracking, and keyboard support.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/calculator.css">
+  <link rel="stylesheet" href="css/keypad.css">
+  <link rel="stylesheet" href="css/history.css">
+  <link rel="stylesheet" href="css/modal.css">
+</head>
+<body>
+
+  <main class="app-container">
+    
+    <!-- Calculator Main Card -->
+    <section class="calculator-card" aria-label="Scientific Calculator">
+      
+      <!-- App Header -->
+      <header class="calculator-header">
+        <div class="brand-wrapper">
+          <div class="brand-logo-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+              <line x1="8" y1="6" x2="16" y2="6"></line>
+              <line x1="16" y1="14" x2="16" y2="18"></line>
+              <path d="M16 10h.01"></path>
+              <path d="M12 10h.01"></path>
+              <path d="M8 10h.01"></path>
+              <path d="M12 14h.01"></path>
+              <path d="M8 14h.01"></path>
+              <path d="M12 18h.01"></path>
+              <path d="M8 18h.01"></path>
+            </svg>
+          </div>
+          <h1 class="brand-title">Quantum <span>Scientific</span></h1>
+        </div>
+
+        <div class="header-actions">
+          <!-- Keyboard shortcuts helper button -->
+          <button id="btn-open-shortcuts" class="icon-button" title="Keyboard Shortcuts (?)" aria-label="View Keyboard Shortcuts">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+              <path d="M6 8h.001M10 8h.001M14 8h.001M18 8h.001M8 12h.001M12 12h.001M16 12h.001M6 16h12"></path>
+            </svg>
+          </button>
+
+          <!-- Audio sound toggle button -->
+          <button id="btn-toggle-sound" class="icon-button" title="Toggle Sound Feedback" aria-label="Toggle Sound">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <line x1="23" y1="9" x2="17" y2="15"></line>
+              <line x1="17" y1="9" x2="23" y2="15"></line>
+            </svg>
+          </button>
+
+          <!-- History panel drawer toggle button -->
+          <button id="btn-toggle-history" class="icon-button" title="Calculation History (H)" aria-label="Toggle History Panel">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span id="history-count-badge" class="badge-counter" style="display: none;">0</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Multi-Line Calculator Display Screen -->
+      <div class="calculator-screen" role="region" aria-label="Calculator Display">
+        <!-- Top status bar inside screen -->
+        <div class="screen-top-bar">
+          <div class="status-indicators">
+            <span id="indicator-angle" class="indicator-pill active" title="Active Angle Mode">DEG</span>
+            <span id="indicator-memory" class="indicator-pill mem-active" style="display: none;" title="Memory stored">M</span>
+          </div>
+          <div class="screen-tools">
+            <button id="btn-copy-result" class="screen-action-btn" title="Copy result to clipboard" aria-label="Copy result">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Expression row with syntax coloring -->
+        <div id="display-expression" class="expression-row" aria-live="polite">
+          <span class="expr-placeholder">0</span>
+        </div>
+
+        <!-- Real-time live evaluation preview row -->
+        <div id="display-preview" class="preview-row" aria-hidden="true"></div>
+
+        <!-- Result / Output row -->
+        <div id="display-result" class="result-row" aria-live="assertive">0</div>
+
+        <!-- Error notification banner -->
+        <div id="display-error" class="error-badge" role="alert"></div>
+      </div>
+
+      <!-- Memory Toolbar Row -->
+      <nav class="memory-toolbar" aria-label="Memory Controls">
+        <button id="btn-mem-mc" class="mem-btn" data-mem="mc" disabled title="Clear Memory (MC)">MC</button>
+        <button id="btn-mem-mr" class="mem-btn" data-mem="mr" disabled title="Recall Memory (MR)">MR</button>
+        <button id="btn-mem-mplus" class="mem-btn" data-mem="m+" title="Add to Memory (M+)">M+</button>
+        <button id="btn-mem-mminus" class="mem-btn" data-mem="m-" title="Subtract from Memory (M-)">M−</button>
+        <button id="btn-mem-ms" class="mem-btn" data-mem="ms" title="Store in Memory (MS)">MS</button>
+      </nav>
+
+      <!-- Keypad Grid -->
+      <div id="calculator-keypad" class="keypad-grid" role="group" aria-label="Calculator Keypad">
+        
+        <!-- Row 1: 2nd, DEG/RAD, sin, cos, tan -->
+        <button id="btn-2nd" class="calc-btn btn-toggle-2nd" title="Toggle 2nd Functions (sin⁻¹, cos⁻¹, tan⁻¹, x³, ∛, 10ˣ, eˣ)">2nd</button>
+        <button id="btn-mode-deg-rad" class="calc-btn btn-mode" title="Toggle Degree/Radian Mode">DEG</button>
+        <button id="btn-sin" class="calc-btn btn-func" data-action="func" data-value="sin(" title="Sine function">sin</button>
+        <button id="btn-cos" class="calc-btn btn-func" data-action="func" data-value="cos(" title="Cosine function">cos</button>
+        <button id="btn-tan" class="calc-btn btn-func" data-action="func" data-value="tan(" title="Tangent function">tan</button>
+
+        <!-- Row 2: x², xʸ, √, log, ln -->
+        <button id="btn-sqr" class="calc-btn btn-func" data-action="sqr" title="Square (x²)">x²</button>
+        <button id="btn-pow" class="calc-btn btn-func" data-action="operator" data-value="^" title="Power (xʸ)">xʸ</button>
+        <button id="btn-sqrt" class="calc-btn btn-func" data-action="func" data-value="sqrt(" title="Square Root (√)">√</button>
+        <button id="btn-log" class="calc-btn btn-func" data-action="func" data-value="log(" title="Base-10 Logarithm">log</button>
+        <button id="btn-ln" class="calc-btn btn-func" data-action="func" data-value="ln(" title="Natural Logarithm (ln)">ln</button>
+
+        <!-- Row 3: 1/x, |x|, π, e, EXP -->
+        <button id="btn-recip" class="calc-btn btn-func" data-action="recip" title="Reciprocal (1/x)">1/x</button>
+        <button id="btn-abs" class="calc-btn btn-func" data-action="func" data-value="abs(" title="Absolute Value |x|">|x|</button>
+        <button id="btn-pi" class="calc-btn btn-func" data-action="constant" data-value="π" title="Pi Constant (π)">π</button>
+        <button id="btn-e" class="calc-btn btn-func" data-action="constant" data-value="e" title="Euler's Constant (e)">e</button>
+        <button id="btn-exp" class="calc-btn btn-func" data-action="exp-notation" title="Scientific Notation (EXP)">EXP</button>
+
+        <!-- Row 4: AC, DEL, (, ), ÷ -->
+        <button id="btn-ac" class="calc-btn btn-action-clear" data-action="clear" title="All Clear (AC)">AC</button>
+        <button id="btn-del" class="calc-btn btn-action-del" data-action="delete" title="Delete Last Character (DEL)">DEL</button>
+        <button id="btn-lparen" class="calc-btn btn-operator" data-action="num" data-value="(" title="Open Parenthesis">(</button>
+        <button id="btn-rparen" class="calc-btn btn-operator" data-action="num" data-value=")" title="Close Parenthesis">)</button>
+        <button id="btn-divide" class="calc-btn btn-operator" data-action="operator" data-value="÷" title="Divide (÷)">÷</button>
+
+        <!-- Row 5: n!, 7, 8, 9, × -->
+        <button id="btn-fact" class="calc-btn btn-func" data-action="operator" data-value="!" title="Factorial (n!)">n!</button>
+        <button id="btn-num-7" class="calc-btn btn-number" data-action="num" data-value="7">7</button>
+        <button id="btn-num-8" class="calc-btn btn-number" data-action="num" data-value="8">8</button>
+        <button id="btn-num-9" class="calc-btn btn-number" data-action="num" data-value="9">9</button>
+        <button id="btn-multiply" class="calc-btn btn-operator" data-action="operator" data-value="×" title="Multiply (×)">×</button>
+
+        <!-- Row 6: %, 4, 5, 6, − -->
+        <button id="btn-percent" class="calc-btn btn-func" data-action="operator" data-value="%" title="Percentage (%)">%</button>
+        <button id="btn-num-4" class="calc-btn btn-number" data-action="num" data-value="4">4</button>
+        <button id="btn-num-5" class="calc-btn btn-number" data-action="num" data-value="5">5</button>
+        <button id="btn-num-6" class="calc-btn btn-number" data-action="num" data-value="6">6</button>
+        <button id="btn-subtract" class="calc-btn btn-operator" data-action="operator" data-value="−" title="Subtract (−)">−</button>
+
+        <!-- Row 7: +/−, 1, 2, 3, + -->
+        <button id="btn-sign" class="calc-btn btn-func" data-action="sign" title="Toggle Positive/Negative (+/−)">+/−</button>
+        <button id="btn-num-1" class="calc-btn btn-number" data-action="num" data-value="1">1</button>
+        <button id="btn-num-2" class="calc-btn btn-number" data-action="num" data-value="2">2</button>
+        <button id="btn-num-3" class="calc-btn btn-number" data-action="num" data-value="3">3</button>
+        <button id="btn-add" class="calc-btn btn-operator" data-action="operator" data-value="+" title="Add (+)">+</button>
+
+        <!-- Row 8: 0 (span 2), ., = (span 2) -->
+        <button id="btn-num-0" class="calc-btn btn-number span-2" data-action="num" data-value="0">0</button>
+        <button id="btn-dot" class="calc-btn btn-number" data-action="num" data-value="." title="Decimal Point">.</button>
+        <button id="btn-equals" class="calc-btn btn-equals span-2" data-action="calculate" title="Calculate Result (=)">=</button>
+
+      </div>
+    </section>
+
+    <!-- Calculation History Sidebar Panel -->
+    <aside id="history-panel" class="history-panel" aria-label="Calculation History">
+      <div class="history-header">
+        <div class="history-title-group">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span class="history-title">History</span>
+        </div>
+        <div class="history-actions">
+          <button id="btn-clear-history" class="history-tool-btn" title="Clear all history" aria-label="Clear all history">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+          </button>
+          <button id="btn-close-history" class="history-tool-btn history-close-btn" title="Close history" aria-label="Close history">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Scrollable list of past calculations -->
+      <div id="history-list" class="history-list"></div>
+    </aside>
+
+  </main>
+
+  <!-- Keyboard Shortcuts Modal Dialog -->
+  <div id="shortcuts-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-title" class="modal-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+            <path d="M6 8h.001M10 8h.001M14 8h.001M18 8h.001M8 12h.001M12 12h.001M16 12h.001M6 16h12"></path>
+          </svg>
+          Keyboard Shortcuts
+        </h2>
+        <button id="btn-close-shortcuts" class="modal-close-btn" aria-label="Close modal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        <div>
+          <h3 class="shortcut-category-title">Basic Input &amp; Arithmetic</h3>
+          <div class="shortcut-grid">
+            <div class="shortcut-row">
+              <span class="shortcut-label">Numbers &amp; Decimal</span>
+              <span><kbd>0</kbd>–<kbd>9</kbd> <kbd>.</kbd></span>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Addition &amp; Subtraction</span>
+              <span><kbd>+</kbd> <kbd>-</kbd></span>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Multiplication &amp; Division</span>
+              <span><kbd>*</kbd> <kbd>/</kbd></span>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Calculate / Equals</span>
+              <span><kbd>Enter</kbd> or <kbd>=</kbd></span>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Delete Character</span>
+              <kbd>Backspace</kbd>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Clear All</span>
+              <span><kbd>Delete</kbd> or <kbd>Esc</kbd></span>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Parentheses</span>
+              <span><kbd>(</kbd> <kbd>)</kbd></span>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Percentage</span>
+              <kbd>%</kbd>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="shortcut-category-title">Scientific Functions &amp; Constants</h3>
+          <div class="shortcut-grid">
+            <div class="shortcut-row">
+              <span class="shortcut-label">Power (xʸ)</span>
+              <kbd>^</kbd>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Factorial (n!)</span>
+              <kbd>!</kbd>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Square Root (√)</span>
+              <kbd>r</kbd>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Constants (π, e)</span>
+              <span><kbd>p</kbd> <kbd>e</kbd></span>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Sine / Inverse Sine</span>
+              <span><kbd>s</kbd> / <kbd>Shift+S</kbd></span>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Cosine / Inverse Cosine</span>
+              <span><kbd>c</kbd> / <kbd>Shift+C</kbd></span>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Tangent / Inverse Tangent</span>
+              <span><kbd>t</kbd> / <kbd>Shift+T</kbd></span>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Log (base 10) / Ln</span>
+              <span><kbd>l</kbd> / <kbd>n</kbd></span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="shortcut-category-title">Controls &amp; Navigation</h3>
+          <div class="shortcut-grid">
+            <div class="shortcut-row">
+              <span class="shortcut-label">Toggle DEG / RAD</span>
+              <kbd>d</kbd>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Toggle 2nd Function</span>
+              <span><kbd>Tab</kbd> or <kbd>`</kbd></span>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Toggle History Panel</span>
+              <kbd>h</kbd>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Copy Result</span>
+              <kbd>Ctrl+C</kbd>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Open Shortcuts Modal</span>
+              <kbd>?</kbd>
+            </div>
+            <div class="shortcut-row">
+              <span class="shortcut-label">Close Modal</span>
+              <kbd>Esc</kbd>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" aria-live="polite"></div>
+
+  <!-- Main Application Script (ES Module) -->
+  <script type="module" src="js/app.js"></script>
+
+</body>
+</html>

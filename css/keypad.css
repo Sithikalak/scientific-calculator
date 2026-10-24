@@ -1,0 +1,191 @@
+/**
+ * keypad.css
+ * Keypad grid styling, rounded buttons, hover glows, micro-interactions,
+ * and category-based color themes.
+ */
+
+.keypad-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+
+/* Base Calculator Button */
+.calc-btn {
+  background: var(--btn-num-bg);
+  color: var(--btn-num-color);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 14px 6px;
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--shadow-btn);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.calc-btn:hover {
+  background: var(--btn-num-hover);
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
+.calc-btn:active,
+.calc-btn.btn-pressed {
+  transform: translateY(1px) scale(0.96);
+  box-shadow: var(--shadow-btn-pressed);
+}
+
+/* Ripple micro-interaction effect */
+.calc-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 10%, transparent 60%);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.calc-btn.btn-pressed::after {
+  transform: translate(-50%, -50%) scale(2.2);
+  opacity: 1;
+}
+
+/* Category: Numbers */
+.calc-btn.btn-number {
+  background: #191c2b;
+  color: #f8fafc;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.calc-btn.btn-number:hover {
+  background: #24293d;
+}
+
+/* Category: Basic Operators (+ - × ÷ ^) */
+.calc-btn.btn-operator {
+  background: var(--btn-op-bg);
+  color: var(--btn-op-color);
+  border-color: var(--btn-op-border);
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.calc-btn.btn-operator:hover {
+  background: var(--btn-op-hover);
+  color: #ddd6fe;
+  border-color: rgba(167, 139, 250, 0.45);
+  box-shadow: 0 6px 14px rgba(124, 58, 237, 0.25);
+}
+
+/* Category: Scientific Functions */
+.calc-btn.btn-func {
+  background: var(--btn-fn-bg);
+  color: var(--btn-fn-color);
+  border-color: var(--btn-fn-border);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.calc-btn.btn-func:hover {
+  background: var(--btn-fn-hover);
+  color: #7dd3fc;
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: 0 6px 14px rgba(56, 189, 248, 0.15);
+}
+
+/* Category: Clear (AC) */
+.calc-btn.btn-action-clear {
+  background: var(--btn-action-clear-bg);
+  color: var(--btn-action-clear-color);
+  border-color: rgba(244, 63, 94, 0.25);
+  font-weight: 700;
+}
+
+.calc-btn.btn-action-clear:hover {
+  background: var(--btn-action-clear-hover);
+  color: #fda4af;
+  border-color: rgba(244, 63, 94, 0.5);
+  box-shadow: 0 6px 14px rgba(244, 63, 94, 0.2);
+}
+
+/* Category: Delete (DEL) */
+.calc-btn.btn-action-del {
+  background: var(--btn-action-del-bg);
+  color: var(--btn-action-del-color);
+  border-color: rgba(251, 146, 60, 0.25);
+  font-weight: 600;
+}
+
+.calc-btn.btn-action-del:hover {
+  background: var(--btn-action-del-hover);
+  color: #fed7aa;
+  border-color: rgba(251, 146, 60, 0.5);
+  box-shadow: 0 6px 14px rgba(251, 146, 60, 0.2);
+}
+
+/* Category: 2nd Toggle Button */
+.calc-btn.btn-toggle-2nd {
+  background: rgba(139, 92, 246, 0.1);
+  color: #a78bfa;
+  border-color: rgba(139, 92, 246, 0.25);
+  font-weight: 700;
+}
+
+.calc-btn.btn-toggle-2nd.active {
+  background: var(--accent-purple);
+  color: #ffffff;
+  border-color: #a855f7;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+}
+
+/* Category: DEG / RAD toggle */
+.calc-btn.btn-mode {
+  background: rgba(56, 189, 248, 0.08);
+  color: var(--accent-cyan);
+  border-color: rgba(56, 189, 248, 0.2);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+/* Category: Equals (=) */
+.calc-btn.btn-equals {
+  background: var(--btn-equals-gradient);
+  color: var(--btn-equals-color);
+  font-size: 1.5rem;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: var(--btn-equals-shadow);
+}
+
+.calc-btn.btn-equals:hover {
+  background: var(--btn-equals-hover);
+  box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Grid Spanning */
+.span-2 {
+  grid-column: span 2;
+}
+
+.span-3 {
+  grid-column: span 3;
+}
