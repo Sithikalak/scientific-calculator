@@ -1,6 +1,6 @@
 /**
  * main.css - Core Design System & Tokens
- * Dark theme with obsidian black, slate glassmorphism, electric indigo and cyber violet accents.
+ * Fully responsive, auto-scaling for all screen sizes (mobile, tablet, desktop, landscape).
  */
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
@@ -10,11 +10,11 @@
   --bg-darkest: #07080d;
   --bg-primary: #0b0d14;
   --bg-surface: #121520;
-  --bg-surface-glass: rgba(18, 21, 32, 0.75);
+  --bg-surface-glass: rgba(18, 21, 32, 0.82);
   --bg-surface-elevated: #1a1e2d;
   
   /* Borders */
-  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-subtle: rgba(255, 255, 255, 0.08);
   --border-focus: rgba(99, 102, 241, 0.5);
   --border-glow: rgba(139, 92, 246, 0.25);
 
@@ -27,19 +27,19 @@
   --btn-fn-bg: #111420;
   --btn-fn-hover: #1c2033;
   --btn-fn-color: #38bdf8;
-  --btn-fn-border: rgba(56, 189, 248, 0.15);
+  --btn-fn-border: rgba(56, 189, 248, 0.16);
 
   --btn-op-bg: #1c1836;
   --btn-op-hover: #2e2659;
   --btn-op-color: #a78bfa;
   --btn-op-border: rgba(167, 139, 250, 0.25);
 
-  --btn-action-clear-bg: rgba(244, 63, 94, 0.12);
-  --btn-action-clear-hover: rgba(244, 63, 94, 0.22);
+  --btn-action-clear-bg: rgba(244, 63, 94, 0.14);
+  --btn-action-clear-hover: rgba(244, 63, 94, 0.25);
   --btn-action-clear-color: #fb7185;
 
-  --btn-action-del-bg: rgba(251, 146, 60, 0.12);
-  --btn-action-del-hover: rgba(251, 146, 60, 0.22);
+  --btn-action-del-bg: rgba(251, 146, 60, 0.14);
+  --btn-action-del-hover: rgba(251, 146, 60, 0.25);
   --btn-action-del-color: #fb923c;
 
   --btn-equals-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
@@ -60,7 +60,7 @@
 
   /* Shadows & Glows */
   --shadow-shell: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(99, 102, 241, 0.08);
-  --shadow-btn: 0 3px 8px rgba(0, 0, 0, 0.35);
+  --shadow-btn: 0 2px 6px rgba(0, 0, 0, 0.35);
   --shadow-btn-pressed: inset 0 2px 4px rgba(0, 0, 0, 0.5);
 
   /* Transitions */
@@ -75,11 +75,16 @@
   padding: 0;
 }
 
+html {
+  height: 100%;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-darkest);
   color: #e2e8f0;
   min-height: 100vh;
+  min-height: 100dvh; /* Modern dynamic viewport height */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -89,6 +94,7 @@ body {
   user-select: none;
   -webkit-user-select: none;
   -webkit-font-smoothing: antialiased;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 /* Ambient Background Light Orbs */
@@ -99,23 +105,23 @@ body::after {
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
-  filter: blur(120px);
-  opacity: 0.3;
+  filter: blur(100px);
+  opacity: 0.25;
 }
 
 body::before {
-  width: 500px;
-  height: 500px;
-  top: -100px;
-  left: 10%;
+  width: clamp(250px, 45vw, 550px);
+  height: clamp(250px, 45vw, 550px);
+  top: -80px;
+  left: 5%;
   background: radial-gradient(circle, #4f46e5 0%, rgba(99, 102, 241, 0) 70%);
 }
 
 body::after {
-  width: 600px;
-  height: 600px;
-  bottom: -150px;
-  right: 10%;
+  width: clamp(300px, 50vw, 650px);
+  height: clamp(300px, 50vw, 650px);
+  bottom: -100px;
+  right: 5%;
   background: radial-gradient(circle, #7c3aed 0%, rgba(139, 92, 246, 0) 70%);
 }
 
@@ -124,19 +130,21 @@ body::after {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1050px;
   margin: 0 auto;
-  padding: 20px;
+  padding: clamp(8px, 2.5vw, 24px);
   display: flex;
-  gap: 24px;
+  gap: clamp(12px, 2vw, 24px);
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 /* Toast Notifications */
 #toast-container {
   position: fixed;
-  bottom: 24px;
+  bottom: clamp(16px, 4vh, 28px);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -144,35 +152,39 @@ body::after {
   gap: 8px;
   z-index: 1000;
   pointer-events: none;
+  width: max-content;
+  max-width: 90vw;
 }
 
 .toast-notification {
-  background: rgba(26, 30, 46, 0.95);
+  background: rgba(26, 30, 46, 0.96);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: #f1f5f9;
-  border: 1px solid rgba(139, 92, 246, 0.35);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(99, 102, 241, 0.2);
-  padding: 10px 20px;
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(99, 102, 241, 0.25);
+  padding: 8px 18px;
   border-radius: 30px;
-  font-size: 0.88rem;
+  font-size: clamp(0.78rem, 2vw, 0.88rem);
   font-weight: 500;
   display: flex;
   align-items: center;
   gap: 8px;
   animation: toastSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   pointer-events: auto;
+  text-align: center;
 }
 
 .toast-notification.toast-fade-out {
   opacity: 0;
   transform: translateY(10px) scale(0.95);
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 @keyframes toastSlideUp {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.95);
+    transform: translateY(16px) scale(0.95);
   }
   to {
     opacity: 1;

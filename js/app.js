@@ -46,7 +46,8 @@ class CalculatorApp {
       shortcutsModal: document.getElementById('shortcuts-modal'),
       toastContainer: document.getElementById('toast-container'),
       soundToggleBtn: document.getElementById('btn-toggle-sound'),
-      copyBtn: document.getElementById('btn-copy-result')
+      copyBtn: document.getElementById('btn-copy-result'),
+      historyBackdrop: document.getElementById('history-backdrop')
     };
 
     this.init();
@@ -120,6 +121,10 @@ class CalculatorApp {
     const historyCloseBtn = document.getElementById('btn-close-history');
     if (historyCloseBtn) {
       historyCloseBtn.addEventListener('click', () => this.toggleHistoryPanel(false));
+    }
+
+    if (this.dom.historyBackdrop) {
+      this.dom.historyBackdrop.addEventListener('click', () => this.toggleHistoryPanel(false));
     }
 
     const clearHistoryBtn = document.getElementById('btn-clear-history');
@@ -618,10 +623,21 @@ class CalculatorApp {
       }
       if (this.dom.resultDisplay) {
         this.dom.resultDisplay.classList.remove('error-state');
-        if (this.hasCalculated) {
-          this.dom.resultDisplay.textContent = Formatter.formatResult(this.result);
+        const textVal = this.hasCalculated
+          ? Formatter.formatResult(this.result)
+          : (this.expression ? '' : '0');
+        this.dom.resultDisplay.textContent = textVal;
+
+        // Dynamic result font auto-scaling to prevent overflow on small screens
+        const len = textVal.length;
+        if (len > 18) {
+          this.dom.resultDisplay.style.fontSize = 'clamp(1.05rem, 3.4vw, 1.35rem)';
+        } else if (len > 14) {
+          this.dom.resultDisplay.style.fontSize = 'clamp(1.25rem, 4vw, 1.65rem)';
+        } else if (len > 10) {
+          this.dom.resultDisplay.style.fontSize = 'clamp(1.45rem, 4.6vw, 1.95rem)';
         } else {
-          this.dom.resultDisplay.textContent = this.expression ? '' : '0';
+          this.dom.resultDisplay.style.fontSize = '';
         }
       }
       if (this.dom.previewDisplay) {
@@ -749,6 +765,9 @@ class CalculatorApp {
     if (!this.dom.historyPanel) return;
     const isOpen = forceState !== undefined ? forceState : !this.dom.historyPanel.classList.contains('open');
     this.dom.historyPanel.classList.toggle('open', isOpen);
+    if (this.dom.historyBackdrop) {
+      this.dom.historyBackdrop.classList.toggle('open', isOpen);
+    }
     const toggleBtn = document.getElementById('btn-toggle-history');
     if (toggleBtn) toggleBtn.classList.toggle('active', isOpen);
   }

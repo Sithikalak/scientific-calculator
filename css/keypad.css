@@ -1,13 +1,13 @@
 /**
  * keypad.css
  * Keypad grid styling, rounded buttons, hover glows, micro-interactions,
- * and category-based color themes.
+ * and category-based color themes. Fully auto-responsive for all viewports.
  */
 
 .keypad-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
+  gap: clamp(5px, 1.2vw, 10px);
   width: 100%;
 }
 
@@ -16,10 +16,10 @@
   background: var(--btn-num-bg);
   color: var(--btn-num-color);
   border: 1px solid var(--border-subtle);
-  border-radius: 16px;
-  padding: 14px 6px;
+  border-radius: clamp(10px, 2.5vw, 16px);
+  padding: clamp(10px, 1.6vh, 15px) clamp(2px, 0.8vw, 6px);
   font-family: var(--font-sans);
-  font-size: 1.15rem;
+  font-size: clamp(0.95rem, 2.2vw, 1.18rem);
   font-weight: 500;
   cursor: pointer;
   box-shadow: var(--shadow-btn);
@@ -31,13 +31,14 @@
   transition: all var(--transition-fast);
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  min-height: clamp(38px, 6.2vh, 52px);
 }
 
 .calc-btn:hover {
   background: var(--btn-num-hover);
   border-color: rgba(255, 255, 255, 0.16);
   transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4);
 }
 
 .calc-btn:active,
@@ -70,7 +71,7 @@
 .calc-btn.btn-number {
   background: #191c2b;
   color: #f8fafc;
-  font-size: 1.25rem;
+  font-size: clamp(1.1rem, 2.6vw, 1.3rem);
   font-weight: 600;
 }
 
@@ -83,7 +84,7 @@
   background: var(--btn-op-bg);
   color: var(--btn-op-color);
   border-color: var(--btn-op-border);
-  font-size: 1.35rem;
+  font-size: clamp(1.15rem, 2.8vw, 1.4rem);
   font-weight: 600;
 }
 
@@ -99,7 +100,7 @@
   background: var(--btn-fn-bg);
   color: var(--btn-fn-color);
   border-color: var(--btn-fn-border);
-  font-size: 1rem;
+  font-size: clamp(0.78rem, 1.9vw, 1.02rem);
   font-weight: 600;
   letter-spacing: -0.01em;
 }
@@ -117,6 +118,7 @@
   color: var(--btn-action-clear-color);
   border-color: rgba(244, 63, 94, 0.25);
   font-weight: 700;
+  font-size: clamp(0.9rem, 2.2vw, 1.15rem);
 }
 
 .calc-btn.btn-action-clear:hover {
@@ -132,6 +134,7 @@
   color: var(--btn-action-del-color);
   border-color: rgba(251, 146, 60, 0.25);
   font-weight: 600;
+  font-size: clamp(0.85rem, 2.1vw, 1.1rem);
 }
 
 .calc-btn.btn-action-del:hover {
@@ -147,6 +150,7 @@
   color: #a78bfa;
   border-color: rgba(139, 92, 246, 0.25);
   font-weight: 700;
+  font-size: clamp(0.82rem, 1.9vw, 1.05rem);
 }
 
 .calc-btn.btn-toggle-2nd.active {
@@ -162,14 +166,14 @@
   color: var(--accent-cyan);
   border-color: rgba(56, 189, 248, 0.2);
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: clamp(0.78rem, 1.8vw, 0.95rem);
 }
 
 /* Category: Equals (=) */
 .calc-btn.btn-equals {
   background: var(--btn-equals-gradient);
   color: var(--btn-equals-color);
-  font-size: 1.5rem;
+  font-size: clamp(1.3rem, 3.2vw, 1.6rem);
   font-weight: 700;
   border: 1px solid rgba(255, 255, 255, 0.25);
   box-shadow: var(--btn-equals-shadow);
@@ -188,4 +192,29 @@
 
 .span-3 {
   grid-column: span 3;
+}
+
+/* Landscape Mode for Small Screens */
+@media (max-height: 580px) and (orientation: landscape) {
+  .keypad-grid {
+    gap: 4px;
+  }
+  .calc-btn {
+    padding: 4px 2px;
+    min-height: 28px;
+    font-size: 0.82rem;
+    border-radius: 8px;
+  }
+  .calc-btn.btn-number {
+    font-size: 0.95rem;
+  }
+  .calc-btn.btn-operator {
+    font-size: 1.05rem;
+  }
+  .calc-btn.btn-func {
+    font-size: 0.75rem;
+  }
+  .calc-btn.btn-equals {
+    font-size: 1.1rem;
+  }
 }

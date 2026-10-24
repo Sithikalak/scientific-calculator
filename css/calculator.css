@@ -1,25 +1,26 @@
 /**
  * calculator.css
  * Calculator chassis, sleek header bar, multi-line display, syntax highlighting,
- * and memory toolbar.
+ * and memory toolbar. Auto-optimized for all screen sizes and orientations.
  */
 
 .calculator-card {
   width: 100%;
-  max-width: 520px;
+  max-width: 480px;
   background: var(--bg-surface-glass);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--border-subtle);
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: clamp(18px, 4vw, 28px);
   box-shadow: var(--shadow-shell);
-  padding: 24px;
+  padding: clamp(12px, 2.8vw, 22px);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: clamp(8px, 1.6vh, 14px);
   position: relative;
   transition: transform var(--transition-normal);
+  flex-shrink: 0;
 }
 
 /* App Header Bar */
@@ -27,29 +28,34 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 4px;
+  padding-bottom: 2px;
 }
 
 .brand-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: clamp(6px, 1.5vw, 10px);
 }
 
 .brand-logo-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
+  width: clamp(26px, 4.5vw, 32px);
+  height: clamp(26px, 4.5vw, 32px);
+  border-radius: 9px;
   background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+  box-shadow: 0 3px 10px rgba(124, 58, 237, 0.35);
   color: #ffffff;
 }
 
+.brand-logo-icon svg {
+  width: clamp(15px, 2.5vw, 19px);
+  height: clamp(15px, 2.5vw, 19px);
+}
+
 .brand-title {
-  font-size: 1.05rem;
+  font-size: clamp(0.92rem, 2.5vw, 1.1rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: #f8fafc;
@@ -62,28 +68,28 @@
   background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: 0.72rem;
+  font-size: clamp(0.64rem, 1.6vw, 0.74rem);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   border: 1px solid rgba(56, 189, 248, 0.25);
   border-radius: 6px;
-  padding: 1px 6px;
+  padding: 1px 5px;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: clamp(4px, 1vw, 8px);
 }
 
 .icon-button {
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-subtle);
   color: #94a3b8;
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
+  width: clamp(32px, 5.5vw, 38px);
+  height: clamp(32px, 5.5vw, 38px);
+  border-radius: 9px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -92,10 +98,15 @@
   position: relative;
 }
 
+.icon-button svg {
+  width: clamp(15px, 2.6vw, 18px);
+  height: clamp(15px, 2.6vw, 18px);
+}
+
 .icon-button:hover {
   background: #252b40;
   color: #f1f5f9;
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.16);
   transform: translateY(-1px);
 }
 
@@ -104,7 +115,7 @@
 }
 
 .icon-button.active {
-  background: rgba(99, 102, 241, 0.2);
+  background: rgba(99, 102, 241, 0.22);
   color: #a5b4fc;
   border-color: var(--accent-indigo);
 }
@@ -115,25 +126,25 @@
   right: -4px;
   background: var(--accent-purple);
   color: #ffffff;
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 700;
   padding: 1px 5px;
   border-radius: 10px;
-  min-width: 16px;
+  min-width: 15px;
   text-align: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 /* Display Screen */
 .calculator-screen {
-  background: rgba(10, 12, 18, 0.85);
+  background: rgba(10, 12, 18, 0.88);
   border: 1px solid var(--border-subtle);
-  border-radius: 20px;
-  padding: 16px 20px;
+  border-radius: clamp(14px, 3vw, 20px);
+  padding: clamp(10px, 2.2vw, 16px) clamp(12px, 2.6vw, 18px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 140px;
+  min-height: clamp(100px, 16vh, 136px);
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
   position: relative;
   overflow: hidden;
@@ -144,21 +155,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 6px;
-  font-size: 0.75rem;
+  margin-bottom: 4px;
+  font-size: 0.72rem;
   font-weight: 600;
 }
 
 .status-indicators {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .indicator-pill {
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-size: 0.7rem;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: clamp(0.64rem, 1.5vw, 0.7rem);
   letter-spacing: 0.04em;
   font-family: var(--font-mono);
   background: rgba(255, 255, 255, 0.05);
@@ -182,7 +193,7 @@
 .screen-tools {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .screen-action-btn {
@@ -200,7 +211,7 @@
 
 .screen-action-btn:hover {
   color: #e2e8f0;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .screen-action-btn.copy-success {
@@ -210,20 +221,20 @@
 /* Mathematical Expression Display */
 .expression-row {
   font-family: var(--font-mono);
-  font-size: 1.15rem;
+  font-size: clamp(0.95rem, 2.2vw, 1.15rem);
   color: #94a3b8;
-  min-height: 28px;
+  min-height: 24px;
   white-space: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
   text-align: right;
   direction: ltr;
   padding: 2px 0;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
 }
 
 .expression-row::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  display: none;
 }
 
 .expr-placeholder {
@@ -238,7 +249,7 @@
 
 .token-operator {
   color: #a78bfa;
-  margin: 0 2px;
+  margin: 0 1px;
   font-weight: 600;
 }
 
@@ -260,10 +271,10 @@
 /* Live Evaluation Preview */
 .preview-row {
   font-family: var(--font-mono);
-  font-size: 0.95rem;
+  font-size: clamp(0.82rem, 1.8vw, 0.95rem);
   color: #64748b;
   text-align: right;
-  min-height: 20px;
+  min-height: 18px;
   font-style: italic;
   letter-spacing: 0.02em;
 }
@@ -271,14 +282,14 @@
 /* Main Result Display */
 .result-row {
   font-family: var(--font-sans);
-  font-size: 2.35rem;
+  font-size: clamp(1.75rem, 5.5vw, 2.45rem);
   font-weight: 700;
   color: #ffffff;
   text-align: right;
-  line-height: 1.2;
+  line-height: 1.15;
   letter-spacing: -0.02em;
   word-break: break-all;
-  transition: transform 0.15s ease, color 0.2s ease;
+  transition: transform 0.15s ease, color 0.2s ease, font-size 0.2s ease;
 }
 
 .result-row.pulse-result {
@@ -287,7 +298,7 @@
 
 .result-row.error-state {
   color: var(--accent-rose);
-  font-size: 1.6rem;
+  font-size: clamp(1.2rem, 3.5vw, 1.6rem);
 }
 
 @keyframes resultPulse {
@@ -311,10 +322,10 @@
   background: rgba(244, 63, 94, 0.14);
   border: 1px solid rgba(244, 63, 94, 0.3);
   color: #fca5a5;
-  font-size: 0.8rem;
-  padding: 4px 10px;
-  border-radius: 8px;
-  margin-top: 6px;
+  font-size: clamp(0.72rem, 1.6vw, 0.82rem);
+  padding: 4px 8px;
+  border-radius: 7px;
+  margin-top: 4px;
   animation: slideDown 0.2s ease;
 }
 
@@ -333,8 +344,8 @@
 .memory-toolbar {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-  margin-top: 2px;
+  gap: clamp(4px, 1vw, 8px);
+  margin-top: 1px;
 }
 
 .mem-btn {
@@ -342,10 +353,10 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   color: #94a3b8;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: clamp(0.68rem, 1.5vw, 0.78rem);
   font-weight: 600;
-  padding: 8px 4px;
-  border-radius: 10px;
+  padding: clamp(5px, 1.1vh, 8px) 2px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all var(--transition-fast);
 }
@@ -363,4 +374,35 @@
 .mem-btn:disabled {
   opacity: 0.35;
   cursor: not-allowed;
+}
+
+/* Landscape mode on small devices (e.g. phones in landscape) */
+@media (max-height: 580px) and (orientation: landscape) {
+  .app-container {
+    padding: 6px 12px;
+  }
+  .calculator-card {
+    max-width: 580px;
+    padding: 10px 14px;
+    gap: 6px;
+  }
+  .calculator-screen {
+    min-height: 75px;
+    padding: 6px 12px;
+  }
+  .result-row {
+    font-size: 1.5rem;
+  }
+  .expression-row {
+    min-height: 20px;
+    font-size: 0.95rem;
+  }
+  .preview-row {
+    min-height: 14px;
+    font-size: 0.78rem;
+  }
+  .mem-btn {
+    padding: 3px 2px;
+    font-size: 0.68rem;
+  }
 }
